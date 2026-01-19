@@ -16,6 +16,7 @@ import axios from "axios"
    async login({email,password}){
     const res = await api.post("/login",{email,password});
      console.log(res);
+     return res;
    } 
    
    async getCurrentUser(){
