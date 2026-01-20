@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import authService from '../../psappwrite/auth'
+import authService from '../psappwrite/auth'
 import { Link } from 'react-router'
-import { logout } from '../../store/authSlice'
+import { logout } from '../store/authSlice'
 function LogoutBtn() {
     const dispatch = useDispatch();
     const logoutHandler = ()=>{
