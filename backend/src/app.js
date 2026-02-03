@@ -13,6 +13,14 @@ app.use(express.static("public")) // public part will be vidible to all
 
 app.use(cookieParser());
 
+// Log incoming Origin for CORS debugging (Render logs)
+app.use((req, _res, next) => {
+  if (req.headers.origin) {
+    console.log("CORS origin:", req.headers.origin);
+  }
+  next();
+});
+
 // CORS configuration
 const defaultOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
 const allowedOrigins = (process.env.CORS_ORIGIN || "")
