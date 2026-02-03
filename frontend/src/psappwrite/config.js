@@ -9,7 +9,8 @@ class Service {
   constructor() {
     this.client
       .setEndpoint(conf.appwriteUrl)
-      .setProject(conf.appwriteProjectId);
+      .setProject(conf.appwriteProjectId)
+      .setKey(conf.appwriteapikey)
     this.bucket = new Storage(this.client);
   }
   // post Service
