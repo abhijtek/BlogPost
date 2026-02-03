@@ -1,16 +1,23 @@
 import React from 'react'
-import { useSelector,useDispatch } from 'react-redux'
+import {useDispatch} from 'react-redux'
 import authService from '../psappwrite/auth'
-import { Link } from 'react-router'
 import { logout } from '../store/authSlice'
+
 function LogoutBtn() {
-    const dispatch = useDispatch();
-    const logoutHandler = ()=>{
-        authService.logout()
-        .then(()=>{dispatch(logout())})
+  console.log("clicked on logout button")
+    const dispatch = useDispatch()
+    const logoutHandler = () => {
+        authService.logout().then(() => {
+            dispatch(logout())
+        })
     }
   return (
-    <div className='p-2 bg-blue-500 rounded-2xl shadow-2xs'>Logout</div>
+    <button
+      className="btn-glass mesh-border inline-block rounded-full px-5 py-2 text-sm font-semibold text-slate-100 transition hover:-translate-y-0.5 hover:shadow-lg"
+      onClick={logoutHandler}
+    >
+      Logout
+    </button>
   )
 }
 

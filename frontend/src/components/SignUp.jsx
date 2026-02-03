@@ -6,19 +6,24 @@ import Button from './Button'
 import Input from './Input'
 import {useDispatch} from 'react-redux'
 import {useForm} from 'react-hook-form'
-
-function Signup() {
+import Logo from '../Logo'
+export default function SignUp() {
+    console.log("cliked on signup component");
+    
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
 
     const create = async(data) => {
+        console.log("here is data",data);
+        
         setError("")
         try {
-            const userData = await authService.createAccount(data)
+            const userData = await authService.createAccount({...data})
             if (userData) {
                 const userData = await authService.getCurrentUser()
+                console.log("received data upon create account-dispatched for login",userData)
                 if(userData) dispatch(login(userData));
                 navigate("/")
             }
@@ -28,36 +33,37 @@ function Signup() {
     }
 
   return (
-    <div className="flex items-center justify-center">
-            <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
-            <div className="mb-2 flex justify-center">
-                    <span className="inline-block w-full max-w-[100px]">
+    
+    <div className="flex items-center justify-center px-4">
+            <div className="glass-card mesh-border mx-auto w-full max-w-lg rounded-3xl p-10">
+            <div className="mb-6 flex justify-center">
+                    <span className="inline-block w-full max-w-[120px]">
                         <Logo width="100%" />
                     </span>
                 </div>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
+                <h2 className="text-center text-3xl font-semibold leading-tight text-slate-100">Sign up to create account</h2>
+                <p className="mt-2 text-center text-sm text-slate-300">
                     Already have an account?&nbsp;
                     <Link
                         to="/login"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
+                        className="font-semibold text-slate-200 transition-all duration-200 hover:text-white"
                     >
                         Sign In
                     </Link>
                 </p>
-                {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
+                {error && <p className="mt-6 text-center text-sm text-slate-300">{error}</p>}
 
-                <form onSubmit={handleSubmit(create)}>
-                    <div className='space-y-5'>
+                <form onSubmit={handleSubmit(create)} className="mt-8">
+                    <div className="space-y-5">
                         <Input
-                        label="Full Name: "
+                        label="Full Name"
                         placeholder="Enter your full name"
-                        {...register("name", {
+                        {...register("username", {
                             required: true,
                         })}
                         />
                         <Input
-                        label="Email: "
+                        label="Email"
                         placeholder="Enter your email"
                         type="email"
                         {...register("email", {
@@ -69,7 +75,7 @@ function Signup() {
                         })}
                         />
                         <Input
-                        label="Password: "
+                        label="Password"
                         type="password"
                         placeholder="Enter your password"
                         {...register("password", {
@@ -85,5 +91,3 @@ function Signup() {
     </div>
   )
 }
-
-export default Signup

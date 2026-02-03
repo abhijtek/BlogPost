@@ -1,48 +1,131 @@
-import conf from "../conf/conf";
+import conf from "../conf/conf.js";
 
 import { Client, Storage, ID } from "appwrite";
+import api from "./api";
 
-const client = new Client()
-    .setEndpoint('https://<REGION>.cloud.appwrite.io/v1')
-    .setProject(conf.appwriteProjectId);
+class Service {
+  client = new Client();
+  bucket;
+  constructor() {
+    this.client
+      .setEndpoint(conf.appwriteUrl)
+      .setProject(conf.appwriteProjectId);
+    this.bucket = new Storage(this.client);
+  }
+  // post Service
 
-const storage = new Storage(client);
+  async createPost({ title, slug, content, featuredImage, status }) {
+    const res = await api.post("/blogs/posts", {
+      title,
+      slug,
+      content,
+      featuredImage,
+      status,
+    });
+    console.log("article created", res);
+    return res;
+  }
 
+  async updatePost(oldslug, { title, content, featuredImage, status,slug:newslug }) {
+    const res = await api.put(`/blogs/posts/${oldslug}`, {
+      title,
+      content,
+      featuredImage,
+      status,
+      slug:newslug,
+    });
+    console.log("updated aricle", res.data);
+    return res.data;
+  }
 
-
-class Service{
-    async uploadFile(file){
-        try {
-            return await storage.createFile({
-    bucketId: conf.appwriteBucketId,
-    fileId: ID.unique(),
-    file: file
-});
-        } catch (error) {
-            console.log("appwrite file service :: upload file",error);
-            return false;
-        }
-    }
-
-    async deleteFile(fileId){
-        try {
-            const result = await storage.deleteFile({
-    bucketId: conf.appwriteBucketId,
-    fileId: fileId
-});
-        } catch (error) {
-            console.log("appwrite file error::delete::",error);
-        }
-    }
-
-    getFilePreview(fileId){
-        try {
-            return storage.getFilePreview({
-                bucketId: appwriteBucketId,
-    fileId: fileId,
-            })
-        } catch (error) {
-            
-        }
-    }
+  async deletePost(slug) {
+try {
+      const res = await api.delete(`/blogs/posts/${slug}`);
+      console.log("delted article", res);
+      return res;
+} catch (error) {
+  console.log("article could not be delted",error);
 }
+  }
+
+  async getPost(slug) {
+    try {
+      const res = await api.get(`/blogs/posts/${slug}`);
+      console.log("got your post in config", res.data);
+      return res.data;
+    } catch (error) {
+      console.log("error getting your post", error);
+    }
+  }
+
+  async getPosts(queries = ["status", "active"]) {
+    try {
+      const res = await api.get("/blogs/posts");
+      
+      return res;
+    } catch (error) {
+      console.log("could not fetch posts from backend", error);
+    }
+  }
+
+  // file upload service
+
+  async uploadFile(file) {
+    try {
+      const result = await this.bucket.createFile(
+        conf.appwriteBucketId,
+        ID.unique(),
+        file,
+      );
+    console.log("this is the result while uploading image",result);
+    return result;
+    } catch (error) {
+      console.log("appwrite file service :: upload file", error);
+      return false;
+    }
+  }
+
+  async deleteFile(fileId) {
+    console.log("file id received while delting file in config.js",fileId);
+    try {
+     const result =  await this.bucket.deleteFile(
+        conf.appwriteBucketId,
+        fileId,
+     );
+      console.log("result received while deleting a image",result);
+      return result;
+    } catch (error) {
+      console.log("appwrite file error::delete::", error);
+      return false;
+    }
+  }
+
+  getFilePreview(fileId) {
+     
+try {
+        const result =  this.bucket.getFileView(
+          conf.appwriteBucketId,
+          fileId,
+        );
+        console.log("getting file preview this was the result",result);
+        return result;
+} catch (error) {
+  console.log("error getting file preview",error);
+}
+    
+  }
+
+  async updateFile(file,oldFileId){
+     console.log("file received while uploading a file",file);
+     try {
+       await this.deleteFile(oldFileId);
+       const newFile = await this.uploadFile(file);
+       return newFile;
+     } catch (error) {
+       console.log("error updating file", error);
+     }
+  }
+}
+
+const service = new Service();
+export default service;
