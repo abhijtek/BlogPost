@@ -13,7 +13,7 @@ export default function SignUp() {
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const dispatch = useDispatch()
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit, formState: { errors }} = useForm()
 
     const create = async(data) => {
         console.log("here is data",data);
@@ -59,28 +59,37 @@ export default function SignUp() {
                         label="Full Name"
                         placeholder="Enter your full name"
                         {...register("username", {
-                            required: true,
+                            required: "Full name is required",
                         })}
                         />
+                        {errors.username?.message && (
+                          <p className="text-xs text-slate-300">{errors.username.message}</p>
+                        )}
                         <Input
                         label="Email"
                         placeholder="Enter your email"
                         type="email"
                         {...register("email", {
-                            required: true,
+                            required: "Email is required",
                             validate: {
                                 matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                                 "Email address must be a valid address",
                             }
                         })}
                         />
+                        {errors.email?.message && (
+                          <p className="text-xs text-slate-300">{errors.email.message}</p>
+                        )}
                         <Input
                         label="Password"
                         type="password"
                         placeholder="Enter your password"
                         {...register("password", {
-                            required: true,})}
+                            required: "Password is required",})}
                         />
+                        {errors.password?.message && (
+                          <p className="text-xs text-slate-300">{errors.password.message}</p>
+                        )}
                         <Button type="submit" className="w-full">
                             Create Account
                         </Button>

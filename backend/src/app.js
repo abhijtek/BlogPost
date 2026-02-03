@@ -13,9 +13,10 @@ app.use(express.static("public")) // public part will be vidible to all
 
 app.use(cookieParser());
 
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin:process.env.CORS_ORIGIN,
     credentials: true,
   }),
 );

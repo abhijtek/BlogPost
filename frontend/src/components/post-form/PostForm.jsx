@@ -15,7 +15,7 @@ function PostForm({ post }) {
   const [iamgeId,setImageId] = useState(post ? appwriteService.getFilePreview(post.featuredImage) : null);
  
   console.log("post form loaded");
-  const { register, handleSubmit, watch, setValue, control, getValues } =
+  const { register, handleSubmit, watch, setValue, control, getValues, formState: { errors } } =
     useForm({
       defaultValues: {
         title: post?.title || "",
@@ -100,24 +100,41 @@ function PostForm({ post }) {
           label="Title"
           placeholder="Title"
           className="mb-4"
-          {...register("title", { required: true })}
+          {...register("title", { required: "Title is required" })}
         />
+        {errors.title?.message && (
+          <p className="text-xs text-slate-300">{errors.title.message}</p>
+        )}
         <Input
           label="Slug"
           placeholder="Slug"
           className="mb-4"
-          {...register("slug", { required: true })}
+          {...register("slug", { required: "Slug is required" })}
           onInput={(e) => {
             setValue("slug", slugTransform(e.currentTarget.value), {
               shouldValidate: true,
             });
           }}
         />
+        {errors.slug?.message && (
+          <p className="text-xs text-slate-300">{errors.slug.message}</p>
+        )}
         <RTE
           label="Content"
           name="content"
           control={control}
           defaultValue={getValues("content")}
+          rules={{
+            required: "Content is required",
+            validate: (value) => {
+              const plainText = value
+                ?.replace(/<[^>]*>/g, " ")
+                .replace(/&nbsp;/g, " ")
+                .trim();
+              return plainText ? true : "Content is required";
+            },
+          }}
+          error={errors.content?.message}
         />
       </div>
       <div className="space-y-4">
@@ -126,8 +143,13 @@ function PostForm({ post }) {
           type="file"
           className="mb-4"
           accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !post })}
+          {...register("image", {
+            required: post ? false : "Featured image is required",
+          })}
         />
+        {errors.image?.message && (
+          <p className="text-xs text-slate-300">{errors.image.message}</p>
+        )}
         {post && (
           <div className="w-full mb-4 overflow-hidden rounded-2xl border border-white/10">
             <img

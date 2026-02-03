@@ -14,7 +14,7 @@ class AuthService {
       if (userAccount) return this.login({ email, password });
     } catch (error) {
       console.log(error.status,error.message,"could not create account");
-      
+      throw new Error("Unable to create account");
     }
   }
 
@@ -24,7 +24,8 @@ try {
       console.log(res);
       return res.data.data;
 } catch (error) {
-  console.log(error.status,error.message,"login failed")
+  console.log(error?.status, error?.message, "login failed");
+  throw new Error("Invalid email or password");
 }
   }
 
