@@ -31,12 +31,31 @@ const combinedOrigins = Array.from(
   new Set([...defaultOrigins, ...allowedOrigins]),
 );
 
+// Explicit CORS headers for allowed origins (helps when proxies strip or errors occur)
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && combinedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+    );
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Vary", "Origin");
+  }
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       if (combinedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error(`CORS not allowed for origin: ${origin}`));
+      return callback(null, false);
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
