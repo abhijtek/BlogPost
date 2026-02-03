@@ -10,7 +10,6 @@ class Service {
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId)
-      .setKey(conf.appwriteapikey)
     this.bucket = new Storage(this.client);
   }
   // post Service
