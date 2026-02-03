@@ -13,53 +13,10 @@ app.use(express.static("public")) // public part will be vidible to all
 
 app.use(cookieParser());
 
-// Log incoming Origin for CORS debugging (Render logs)
-app.use((req, _res, next) => {
-  if (req.headers.origin) {
-    console.log("CORS origin:", req.headers.origin);
-  }
-  next();
-});
-
-// CORS configuration
-const defaultOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
-const allowedOrigins = (process.env.CORS_ORIGIN || "")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-const combinedOrigins = Array.from(
-  new Set([...defaultOrigins, ...allowedOrigins]),
-);
-
-// Explicit CORS headers for allowed origins (helps when proxies strip or errors occur)
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && combinedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, PATCH, DELETE, OPTIONS",
-    );
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Vary", "Origin");
-  }
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-  next();
-});
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (combinedOrigins.includes(origin)) return callback(null, true);
-      return callback(null, false);
-    },
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
