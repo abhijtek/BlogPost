@@ -27,13 +27,15 @@ const allowedOrigins = (process.env.CORS_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+const combinedOrigins = Array.from(
+  new Set([...defaultOrigins, ...allowedOrigins]),
+);
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      const origins = allowedOrigins.length ? allowedOrigins : defaultOrigins;
-      if (origins.includes(origin)) return callback(null, true);
+      if (combinedOrigins.includes(origin)) return callback(null, true);
       return callback(new Error(`CORS not allowed for origin: ${origin}`));
     },
     credentials: true,
