@@ -5,6 +5,8 @@
   color-scheme: dark;
   --bg-deep: #0b0b0d;
   --bg-surface: #1b1c1f;
+  --menu-surface: #2f3238;
+  --menu-border: rgba(255, 255, 255, 0.14);
   --accent-ice: #e6e7eb;
   --accent-ash: #bfc2c9;
   --accent-stone: #8f939b;
@@ -71,6 +73,12 @@ body {
 [data-theme="light"] .input-glass {
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #1d1f24;
+}
+
+[data-theme="light"] .menu-panel {
+  background: #f2f3f6;
+  border-color: rgba(0, 0, 0, 0.12);
   color: #1d1f24;
 }
 
@@ -205,4 +213,116 @@ h4 {
 .browser-css a {
   color: var(--accent-ice);
   text-decoration: underline;
+}
+
+.menu-panel {
+  background: var(--menu-surface);
+  border-color: var(--menu-border);
+}
+
+.shot-card {
+  background: #1f2228;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+[data-theme="light"] .shot-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.shot-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 26px 55px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.shot-media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  position: relative;
+}
+
+.shot-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 260ms ease;
+}
+
+.shot-card:hover .shot-image {
+  transform: scale(1.04);
+}
+
+.shot-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px 18px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(12, 14, 18, 0.85) 100%);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+[data-theme="light"] .shot-overlay {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 40%, rgba(15, 23, 42, 0.6) 100%);
+}
+
+.shot-card:hover .shot-overlay {
+  opacity: 1;
+}
+
+.shot-overlay-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f8fafc;
+  line-height: 1.4;
+}
+
+.shot-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px 16px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+[data-theme="light"] .shot-footer {
+  color: #6b7280;
+}
+
+.shot-author-avatar {
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f172a;
+  color: #f8fafc;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+[data-theme="light"] .shot-author-avatar {
+  background: #111827;
+  color: #f8fafc;
+}
+
+.shot-dot {
+  height: 4px;
+  width: 4px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.5;
 }

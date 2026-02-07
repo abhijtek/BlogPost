@@ -10,6 +10,8 @@ import {
   resendEmailVerification,
   resetForgotPassword,
   verifyEmail,
+  promoteToAdmin,
+  updateProfile,
 } from "../controllers/auth.controllers.js";
 import { validate } from "../middlewares/validator.middleware.js";
 import {
@@ -51,6 +53,8 @@ router
   .route("/resend-email-verification")
   .post(verifyJWT, resendEmailVerification);
 router.route("/logout").post(verifyJWT, logoutUser);
+router.route("/profile").patch(verifyJWT, updateProfile);
+router.route("/admin/promote").post(verifyJWT, promoteToAdmin);
 
 export default router;
 

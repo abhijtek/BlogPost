@@ -4,7 +4,6 @@ import authService from '../psappwrite/auth'
 import { logout } from '../store/authSlice'
 
 function LogoutBtn() {
-  console.log("clicked on logout button")
     const dispatch = useDispatch()
     const logoutHandler = () => {
         authService.logout().then(() => {
@@ -13,7 +12,7 @@ function LogoutBtn() {
     }
   return (
     <button
-      className="btn-glass mesh-border inline-block rounded-full px-5 py-2 text-sm font-semibold text-slate-100 transition hover:-translate-y-0.5 hover:shadow-lg"
+      className="text-sm font-semibold text-slate-200 transition hover:text-white"
       onClick={logoutHandler}
     >
       Logout

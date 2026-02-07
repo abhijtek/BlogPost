@@ -1,16 +1,12 @@
 import React from 'react'
 import Container from '../container/Container.jsx'
 import Logo from '../../Logo.jsx'
-import { useSelector,useDispatch } from 'react-redux'
-
-import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router'
-import LogoutBtn from '../Logout.jsx'
 function Header({ theme, setTheme }) {
   const authStatus = useSelector((state)=>state.auth.status)
+  const userData = useSelector((state)=>state.auth.userData)
   console.log(authStatus)
-  const navigate= useNavigate();
-
     const navItems = [
     {
       name: 'Home',
@@ -46,20 +42,36 @@ function Header({ theme, setTheme }) {
             <Logo width="70px"></Logo>
             <span className="text-lg font-semibold tracking-tight text-slate-100">BlogPost</span>
           </Link>
-          <ul className="ml-auto flex flex-wrap items-center gap-3">
+          <ul className="ml-auto flex flex-wrap items-center gap-4">
             {navItems.map((item)=>item.active ? (
               <li key={item.name}>
-                <button
-                  className="btn-glass mesh-border rounded-full px-5 py-2 text-sm font-semibold text-slate-100 transition hover:-translate-y-0.5 hover:text-white hover:shadow-lg"
-                  onClick={()=> navigate(item.slug)}
+                <Link
+                  className="text-sm font-semibold text-slate-200 transition hover:text-white"
+                  to={item.slug}
                 >
                   {item.name}
-                </button>
+                </Link>
               </li>
             ) : null)}
             {authStatus && (
               <li>
-                <LogoutBtn></LogoutBtn>
+                <Link
+                  className="btn-glass mesh-border flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-slate-100"
+                  to="/panel"
+                  aria-label="Open user panel"
+                >
+                  {userData?.avatar?.url ? (
+                    <img
+                      src={userData.avatar.url}
+                      alt={userData?.username || "User"}
+                      className="h-10 w-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xs font-bold">
+                      {(userData?.username || "U").slice(0, 1).toUpperCase()}
+                    </span>
+                  )}
+                </Link>
               </li>
             )}
             <li>

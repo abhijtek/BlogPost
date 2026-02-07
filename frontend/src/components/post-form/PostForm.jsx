@@ -21,7 +21,8 @@ function PostForm({ post }) {
         title: post?.title || "",
         slug: post?.slug || "",
         content: post?.content || "",
-        status: post?.status || "active",
+        status: post?.status || "draft",
+        tags: post?.tags?.join(", ") || "",
       },
     });
      const imagechanged = watch("image");
@@ -43,7 +44,12 @@ function PostForm({ post }) {
        
       const dbPost = await appwriteService.updatePost(post.slug, {
         title:data.title,
-        slug:data.slug,content:data.content,status:data.status,
+        slug:data.slug,
+        content:data.content,
+        status:data.status,
+        tags: data.tags
+          ? data.tags.split(",").map((t)=> t.trim()).filter(Boolean)
+          : [],
         featuredImage: file ? file.$id : undefined,
       });
       console.log("dbPost received", dbPost);
@@ -51,7 +57,12 @@ function PostForm({ post }) {
       //   state.auth.userData = 
       // })
       if (dbPost) {
-        navigate(`/post/${dbPost._id}`);
+        if (data.status === "submit") {
+          await appwriteService.submitForReview(dbPost.slug || data.slug);
+          navigate("/panel");
+        } else {
+          navigate(`/post/${dbPost._id}`);
+        }
       }
     } else {
       // check wetehr this file shold be checked or not
@@ -61,10 +72,22 @@ function PostForm({ post }) {
         const fileId = file.$id ? file.$id : undefined;
         data.featuredImage = fileId;
         const dbPost = await appwriteService.createPost({
-          title:data.title,slug:data.slug,content:data.content,featuredImage:fileId,status:data.status
+          title:data.title,
+          slug:data.slug,
+          content:data.content,
+          featuredImage:fileId,
+          status:data.status,
+          tags: data.tags
+            ? data.tags.split(",").map((t)=> t.trim()).filter(Boolean)
+            : [],
         });
         if (dbPost) {
-          navigate(`/post/${dbPost._id}`);
+          if (data.status === "submit") {
+            await appwriteService.submitForReview(data.slug);
+            navigate("/panel");
+          } else {
+            navigate(`/post/${dbPost._id}`);
+          }
         }
       }
     }
@@ -141,7 +164,7 @@ function PostForm({ post }) {
         <Input
           label="Featured Image"
           type="file"
-          className="mb-4"
+          className="mb-2"
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", {
             required: post ? false : "Featured image is required",
@@ -159,10 +182,17 @@ function PostForm({ post }) {
             />
           </div>
         )}
+        <Input
+          label="Tags"
+          placeholder="e.g. ai, prompts, devtools"
+          className="mb-2"
+          {...register("tags")}
+        />
+        <p className="text-xs text-slate-400">Separate tags with commas.</p>
         <Select
-          options={["active", "inactive"]}
+          options={["draft", "submit"]}
           label="Status"
-          className="mb-4"
+          className="mt-4 mb-4"
           {...register("status", { required: true })}
         />
         <Button

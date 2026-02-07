@@ -11,7 +11,7 @@ function EditPost() {
 
     useEffect(() => {
         if (slug) {
-            appwriteService.getPost(slug).then((post) => {
+            appwriteService.getMyPost(slug).then((post) => {
                 if (post) {
                     console.log("post received in edit post form",post);
                     setPosts(post)

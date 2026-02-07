@@ -26,12 +26,13 @@ class Service {
     return res;
   }
 
-  async updatePost(oldslug, { title, content, featuredImage, status,slug:newslug }) {
+  async updatePost(oldslug, { title, content, featuredImage, status, tags, slug:newslug }) {
     const res = await api.put(`/blogs/posts/${oldslug}`, {
       title,
       content,
       featuredImage,
       status,
+      tags,
       slug:newslug,
     });
     console.log("updated aricle", res.data);
@@ -58,13 +59,75 @@ try {
     }
   }
 
-  async getPosts(queries = ["status", "active"]) {
+  async incrementView(slug) {
     try {
-      const res = await api.get("/blogs/posts");
+      const res = await api.post(`/blogs/posts/${slug}/view`);
+      return res.data;
+    } catch (error) {
+      console.log("error incrementing view", error);
+    }
+  }
+
+  async getMyPost(slug) {
+    try {
+      const res = await api.get(`/blogs/posts/my/${slug}`);
+      return res.data;
+    } catch (error) {
+      console.log("error getting your post", error);
+    }
+  }
+
+  async getPosts({ sort, order } = {}) {
+    try {
+      const res = await api.get("/blogs/posts", {
+        params: {
+          sort,
+          order,
+        },
+      });
       
       return res;
     } catch (error) {
       console.log("could not fetch posts from backend", error);
+    }
+  }
+
+  async getMyPosts() {
+    try {
+      const res = await api.get("/blogs/posts/my");
+      return res;
+    } catch (error) {
+      console.log("could not fetch my posts from backend", error);
+    }
+  }
+
+  async getPendingPosts() {
+    try {
+      const res = await api.get("/blogs/posts/pending");
+      return res;
+    } catch (error) {
+      console.log("could not fetch pending posts from backend", error);
+    }
+  }
+
+  async submitForReview(slug) {
+    try {
+      const res = await api.post(`/blogs/posts/${slug}/submit`);
+      return res;
+    } catch (error) {
+      console.log("could not submit post for review", error);
+    }
+  }
+
+  async reviewPost(slug, { action, rejectionReason }) {
+    try {
+      const res = await api.patch(`/blogs/posts/${slug}/review`, {
+        action,
+        rejectionReason,
+      });
+      return res;
+    } catch (error) {
+      console.log("could not review post", error);
     }
   }
 

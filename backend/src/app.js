@@ -22,6 +22,12 @@ app.use(
 );
 
 // import routes
+// Feature backlog / reminders:
+// - User panel: view own blogs (draft/published/rejected)
+// - RBAC + approval workflow (admin/editor approves blogs)
+// - View count per blog
+// - Semantic search for blogs
+// - Sort by views / date / popularity
 
 import  healthCheckRouter from "./routes/healthcheck.routes.js" // default export
 

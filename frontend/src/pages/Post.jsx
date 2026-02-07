@@ -17,6 +17,7 @@ export default function Post() {
     const { slug } = useParams();
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
+    const authStatus = useSelector((state) => state.auth.status);
 
     useEffect(() => {
         return () => {
@@ -39,6 +40,14 @@ export default function Post() {
             }
         });
     }, [slug, navigate]);
+
+    useEffect(() => {
+        if (!post || !authStatus) return;
+        const timer = setTimeout(() => {
+            appwriteService.incrementView(post.slug);
+        }, 10000);
+        return () => clearTimeout(timer);
+    }, [post, authStatus]);
 
     const isAuthor =
         post &&
@@ -82,6 +91,33 @@ export default function Post() {
 
                 <div className="glass-card mesh-border mb-8 rounded-3xl px-6 py-5">
                     <h1 className="text-3xl font-semibold text-slate-100">{post.title}</h1>
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-slate-300">
+                        <span>
+                          {post.totalViews >= 1000000
+                            ? `${Math.floor(post.totalViews / 100000) / 10}M`
+                            : post.totalViews >= 10000
+                              ? `${Math.floor(post.totalViews / 1000)}k`
+                              : post.totalViews >= 1000
+                                ? `${Math.floor(post.totalViews / 100) / 10}k`
+                                : post.totalViews || 0}{" "}
+                          views
+                        </span>
+                        {post.publishedAt && (
+                            <span>Published {new Date(post.publishedAt).toLocaleDateString()}</span>
+                        )}
+                    </div>
+                    {post.tags?.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            {post.tags.map((tag) => (
+                                <span
+                                    key={tag}
+                                    className="rounded-full border border-white/15 px-3 py-1 text-xs font-semibold text-slate-200"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="glass-card mesh-border rounded-3xl px-6 py-8">

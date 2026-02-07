@@ -48,6 +48,16 @@ try {
   console.log(error.status,error.message,"logout failed")
 }
   }
+
+  async updateProfile({ username, avatar }) {
+    try {
+      const res = await api.patch("/auth/profile", { username, avatar });
+      return res.data.data;
+    } catch (error) {
+      console.log(error?.status, error?.message, "profile update failed");
+      throw new Error("Profile update failed");
+    }
+  }
 }
 const authService = new AuthService();
 export default authService;

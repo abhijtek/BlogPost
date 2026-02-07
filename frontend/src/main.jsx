@@ -17,6 +17,7 @@ import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
 
 import AllPosts from "./pages/AllPosts";
+import UserPanel from "./pages/UserPanel";
 import SignUp from './components/SignUp.jsx'
 //import SignUp from './pages/SignUp.jsx'
 
@@ -51,6 +52,15 @@ const router = createBrowserRouter([
                 <AuthLayout authentication>
                     {" "}
                     <AllPosts />
+                </AuthLayout>
+            ),
+        },
+        {
+            path: "/panel",
+            element: (
+                <AuthLayout authentication>
+                    {" "}
+                    <UserPanel />
                 </AuthLayout>
             ),
         },

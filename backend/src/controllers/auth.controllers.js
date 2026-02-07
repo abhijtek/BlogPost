@@ -349,6 +349,66 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 // })
 
+const promoteToAdmin = asyncHandler(async (req, res) => {
+  const secret =
+    req.header("x-admin-secret") || req.body?.secret || req.query?.secret;
+  if (!secret || secret !== process.env.ADMIN_PROMOTE_SECRET) {
+    throw new ApiError(403, "Forbidden");
+  }
+
+  const { email, userId } = req.body;
+  if (!email && !userId) {
+    throw new ApiError(400, "email or userId is required");
+  }
+
+  const user = await User.findOne(
+    email ? { email } : { _id: userId },
+  ).select("-password -refreshToken -emailVerificationToken -emailVerificationExpiry");
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  user.role = "admin";
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { user }, "User promoted to admin"));
+});
+
+const updateProfile = asyncHandler(async (req, res) => {
+  const { username, avatar } = req.body;
+  const updates = {};
+
+  if (username) {
+    const existing = await User.findOne({ username });
+    if (existing && String(existing._id) !== String(req.user._id)) {
+      throw new ApiError(409, "Username already in use");
+    }
+    updates.username = username;
+  }
+
+  if (avatar && (avatar.url || avatar.localPath)) {
+    updates.avatar = {
+      url: avatar.url || "",
+      localPath: avatar.localPath || "",
+    };
+  }
+
+  if (Object.keys(updates).length === 0) {
+    throw new ApiError(400, "No valid fields provided");
+  }
+
+  const user = await User.findByIdAndUpdate(req.user._id, updates, {
+    new: true,
+  }).select("-password -refreshToken -emailVerificationToken -emailVerificationExpiry");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { user }, "Profile updated"));
+});
+
 export {
   registerUser,
   login,
@@ -360,4 +420,6 @@ export {
   forgotPasswordRequest,
   resetForgotPassword,
   changeCurrentPassword,
+  updateProfile,
+  promoteToAdmin,
 };

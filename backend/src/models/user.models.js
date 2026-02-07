@@ -4,7 +4,13 @@ import crypto from "crypto"
 import jwt from "jsonwebtoken"
 
 const userSchema = new Schema({
-
+    role: {
+  type: String,
+  enum: ["user", "admin"],
+  default: "user",
+  index: true,
+},
+ 
     avatar:{ // properties of avatar
         type: {
             url: String,
@@ -62,6 +68,22 @@ const userSchema = new Schema({
     emailVerificationExpiry: {
         type : Date ,
     },
+    review: {
+  reviewedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User", // admin (or later LLM system user)
+  },
+
+  reviewedAt: {
+    type: Date,
+  },
+
+  rejectionReason: {
+    type: String,
+    trim: true,
+  },
+},
+
 },
 { // second object as parameter
    timestamps : true,

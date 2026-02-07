@@ -28,3 +28,10 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     throw new ApiError(401, "B-Inalid Access Token");
   }
 });
+
+
+export const requireAdmin = asyncHandler(async(req,res)=>{
+  return req.user.role === "admin";
+  // to be used on admin only routes
+})
+
