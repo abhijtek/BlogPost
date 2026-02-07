@@ -367,6 +367,7 @@ function UserPanel() {
                               src={appwriteService.getFilePreview(post.featuredImage)}
                               alt={post.title}
                               className="h-full w-full object-cover"
+                              loading="lazy"
                             />
                           )}
                         </div>

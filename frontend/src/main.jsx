@@ -1,24 +1,20 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Home from './pages/Home.jsx'
-import { Login } from './components/index.js'
-import AuthLayout  from './components/AuthLayout.jsx'
-
-
-import AddPost from "./pages/AddPost";
-import SignUpPage from "./pages/SignUpPage.jsx"
-import EditPost from "./pages/EditPost";
-
-import Post from "./pages/Post";
-
-import AllPosts from "./pages/AllPosts";
-import UserPanel from "./pages/UserPanel";
-import SignUp from './components/SignUp.jsx'
+const Home = lazy(() => import("./pages/Home.jsx"));
+const Login = lazy(() => import("./components/Login.jsx"));
+const AuthLayout = lazy(() => import("./components/AuthLayout.jsx"));
+const AddPost = lazy(() => import("./pages/AddPost"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage.jsx"));
+const EditPost = lazy(() => import("./pages/EditPost"));
+const Post = lazy(() => import("./pages/Post"));
+const AllPosts = lazy(() => import("./pages/AllPosts"));
+const UserPanel = lazy(() => import("./pages/UserPanel"));
+const SignUp = lazy(() => import("./components/SignUp.jsx"));
 //import SignUp from './pages/SignUp.jsx'
 
 const router = createBrowserRouter([
@@ -28,63 +24,83 @@ const router = createBrowserRouter([
     children: [
         {
             path: "/",
-            element: <Home />,
+            element: (
+                <Suspense fallback={null}>
+                    <Home />
+                </Suspense>
+            ),
         },
         {
             path: "/login",
             element: (
-                <AuthLayout authentication={false}>
-                    <Login />
-                </AuthLayout>
+                <Suspense fallback={null}>
+                    <AuthLayout authentication={false}>
+                        <Login />
+                    </AuthLayout>
+                </Suspense>
             ),
         },
         {
             path: "/signup",
             element: (
-                <AuthLayout authentication={false}>
-                    <SignUp />
-                </AuthLayout>
+                <Suspense fallback={null}>
+                    <AuthLayout authentication={false}>
+                        <SignUp />
+                    </AuthLayout>
+                </Suspense>
             ),
         },
         {
             path: "/all-posts",
             element: (
-                <AuthLayout authentication>
-                    {" "}
-                    <AllPosts />
-                </AuthLayout>
+                <Suspense fallback={null}>
+                    <AuthLayout authentication>
+                        {" "}
+                        <AllPosts />
+                    </AuthLayout>
+                </Suspense>
             ),
         },
         {
             path: "/panel",
             element: (
-                <AuthLayout authentication>
-                    {" "}
-                    <UserPanel />
-                </AuthLayout>
+                <Suspense fallback={null}>
+                    <AuthLayout authentication>
+                        {" "}
+                        <UserPanel />
+                    </AuthLayout>
+                </Suspense>
             ),
         },
         {
             path: "/add-post",
             element: (
-                <AuthLayout authentication>
-                    {" "}
-                    <AddPost />
-                </AuthLayout>
+                <Suspense fallback={null}>
+                    <AuthLayout authentication>
+                        {" "}
+                        <AddPost />
+                    </AuthLayout>
+                </Suspense>
             ),
         },
         {
             path: "/edit-post/:slug",
             element: (
-                <AuthLayout authentication>
-                    {" "}
-                    <EditPost />
-                </AuthLayout>
+                <Suspense fallback={null}>
+                    <AuthLayout authentication>
+                        {" "}
+                        <EditPost />
+                    </AuthLayout>
+                </Suspense>
             ),
         },
         {
             path: "/post/:slug",
-            element: <Post />,
+            element: (
+                <Suspense fallback={null}>
+                    <Post />
+                </Suspense>
+            ),
         },
     ],
 },

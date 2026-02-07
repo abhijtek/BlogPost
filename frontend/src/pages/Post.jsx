@@ -73,6 +73,7 @@ export default function Post() {
                         src={appwriteService.getFilePreview(post.featuredImage)}
                         alt={post.title}
                         className="h-[420px] w-full rounded-2xl object-cover"
+                        loading="lazy"
                     />
 
                     {isAuthor && (

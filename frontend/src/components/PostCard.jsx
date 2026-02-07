@@ -19,6 +19,7 @@ function PostCard({title, featuredImage,slug,content,tags = [], totalViews = 0, 
                   src={appwriteService.getFilePreview(featuredImage)}
                   alt={title}
                   className="shot-image"
+                  loading="lazy"
                 />
                 <div className="shot-overlay">
                   <h2 className="shot-overlay-title">{title}</h2>
