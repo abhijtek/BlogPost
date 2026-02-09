@@ -14,13 +14,14 @@ class Service {
   }
   // post Service
 
-  async createPost({ title, slug, content, featuredImage, status }) {
+  async createPost({ title, slug, content, featuredImage, status, tags }) {
     const res = await api.post("/blogs/posts", {
       title,
       slug,
       content,
       featuredImage,
       status,
+      tags,
     });
     console.log("article created", res);
     return res;

@@ -1,1 +1,18 @@
 @import "tailwindcss";
+:root[data-theme="dark"] {
+  --bg-app: #0b0e11;
+  --text-app: #e6edf3;
+}
+
+:root[data-theme="light"] {
+  --bg-app: #fafaf7;
+  --text-app: #1f2933;
+}
+
+.bg-app {
+  background: var(--bg-app);
+}
+
+.text-app {
+  color: var(--text-app);
+}

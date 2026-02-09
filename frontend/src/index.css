@@ -1,5 +1,23 @@
 @import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+/* Container surface – only visible in light */
+[data-theme="light"] .container-surface {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 24px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 12px 28px rgba(15, 23, 42, 0.08);
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+/* Dark mode: invisible (keeps glass aesthetic) */
+[data-theme="dark"] .container-surface {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
 
 :root {
   color-scheme: dark;

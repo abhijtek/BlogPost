@@ -1,12 +1,20 @@
-import React from 'react'
+import React from "react"
 
-export default function Logo({width = "100px"}) {
+export default function Logo({ width = 96 }) {
   return (
     <img
       src="/bp-logo.png"
-      alt="BP logo"
+      alt="BlogPost logo"
       style={{ width }}
-      className="block h-auto max-w-full rounded-full object-cover"
+      className="
+        block
+        h-auto
+        select-none
+        rounded-xl
+        object-contain
+        transition
+        hover:opacity-90
+      "
     />
   )
 }
