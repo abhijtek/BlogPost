@@ -1,6 +1,4 @@
-import conf from "../conf/conf";
 import api from "./api";
-import axios from "axios";
 
 class AuthService {
   async createAccount({ email, username, password }) {

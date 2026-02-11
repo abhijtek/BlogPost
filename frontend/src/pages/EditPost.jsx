@@ -16,28 +16,23 @@ function EditPost() {
       return
     }
 
-    appwriteService.getMyPost(slug).then((post) => {
-      if (post) setPost(post)
+    appwriteService.getMyPost(slug).then((foundPost) => {
+      if (foundPost) setPost(foundPost)
     })
   }, [slug, navigate])
 
   if (!post) return null
 
   return (
-    <div className="py-8">
-      <Container>
-        <div className="mb-6 max-w-3xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-100">
-            Edit post
-          </h1>
-          <p className="mt-1 text-sm text-slate-300">
-            Update the details and keep it fresh.
-          </p>
-        </div>
+    <Container>
+      <div className="mb-6 max-w-3xl">
+        <p className="hero-kicker">Edit</p>
+        <h1 className="brand-serif mt-3 text-4xl font-semibold leading-tight">Update your post</h1>
+        <p className="mt-2 text-sm text-muted">Refine title, content, tags, and image before publishing.</p>
+      </div>
 
-        <PostForm post={post} />
-      </Container>
-    </div>
+      <PostForm post={post} />
+    </Container>
   )
 }
 

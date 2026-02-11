@@ -28,112 +28,65 @@ function AllPosts() {
     let next = [...posts]
 
     if (selectedTags.length) {
-      next = next.filter((p) =>
-        (p.tags || []).some((t) => selectedTags.includes(t)),
-      )
+      next = next.filter((p) => (p.tags || []).some((t) => selectedTags.includes(t)))
     }
 
     if (query.trim()) {
       const q = query.toLowerCase()
-      next = next.filter(
-        (p) =>
-          p.title?.toLowerCase().includes(q) ||
-          p.slug?.toLowerCase().includes(q),
-      )
+      next = next.filter((p) => p.title?.toLowerCase().includes(q) || p.slug?.toLowerCase().includes(q))
     }
 
     return next
   }, [posts, selectedTags, query])
 
   const toggleTag = (tag) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    )
+    setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
   }
 
   return (
-    <div className="w-full py-8">
-      <Container>
-        {/* Header */}
-        <div className="mb-8 max-w-3xl">
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
-            Blog
-          </p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-100">
-            Discover stories worth reading
-          </h1>
-          <p className="mt-2 text-sm text-slate-300">
-            Search, sort, and filter posts across the platform.
-          </p>
+    <Container>
+      <section className="mb-8">
+        <p className="hero-kicker">Library</p>
+        <h1 className="brand-serif mt-3 text-4xl font-semibold leading-tight sm:text-5xl">Discover every published post</h1>
+      </section>
+
+      <section className="surface-card mb-6 rounded-3xl p-4 sm:p-5">
+        <div className="grid gap-4 lg:grid-cols-[2fr_1fr_1fr]">
+          <Input label="Search" placeholder="Search by title or slug" value={query} onChange={(e) => setQuery(e.target.value)} />
+          <Select label="Sort by" options={["date", "views"]} value={sort} onChange={(e) => setSort(e.target.value)} />
+          <Select label="Order" options={["desc", "asc"]} value={order} onChange={(e) => setOrder(e.target.value)} />
         </div>
+      </section>
 
-        {/* Controls */}
-        <div className="mb-6 grid gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 lg:grid-cols-[2fr_1fr_1fr]">
-          <Input
-            label="Search"
-            placeholder="Search by title or slug"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <Select
-            label="Sort by"
-            options={["date", "views"]}
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-          />
-          <Select
-            label="Order"
-            options={["desc", "asc"]}
-            value={order}
-            onChange={(e) => setOrder(e.target.value)}
-          />
-        </div>
+      <section className="grid gap-6 lg:grid-cols-[240px_1fr]">
+        <aside className="surface-card h-fit rounded-2xl p-4 text-sm">
+          <div className="flex items-center justify-between">
+            <h4 className="font-semibold text-app">Tags</h4>
+            {selectedTags.length > 0 && (
+              <button className="interactive menu-link rounded px-2 py-1 text-xs" onClick={() => setSelectedTags([])}>
+                Clear
+              </button>
+            )}
+          </div>
 
-        {/* Content */}
-        <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
-          {/* Tags */}
-          <aside className="h-fit rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-sm">
-            <div className="flex items-center justify-between">
-              <h4 className="font-semibold text-slate-100">Tags</h4>
-              {selectedTags.length > 0 && (
-                <button
-                  className="text-xs text-slate-300 hover:text-white"
-                  onClick={() => setSelectedTags([])}
-                >
-                  Clear
-                </button>
-              )}
-            </div>
-
-            <div className="mt-3 flex flex-wrap gap-2">
-              {allTags.length === 0 && (
-                <p className="text-xs text-slate-400">No tags</p>
-              )}
-              {allTags.map((tag) => (
-                <label
-                  key={tag}
-                  className="flex items-center gap-2 rounded-md px-2 py-1 text-xs text-slate-200 hover:bg-white/5"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedTags.includes(tag)}
-                    onChange={() => toggleTag(tag)}
-                  />
-                  {tag}
-                </label>
-              ))}
-            </div>
-          </aside>
-
-          {/* Posts */}
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredPosts.map((post) => (
-              <PostCard key={post._id} {...post} />
+          <div className="mt-3 flex flex-wrap gap-2">
+            {allTags.length === 0 && <p className="text-xs text-muted">No tags</p>}
+            {allTags.map((tag) => (
+              <label key={tag} className="chip interactive flex items-center gap-2 rounded-full px-2.5 py-1 text-xs">
+                <input type="checkbox" checked={selectedTags.includes(tag)} onChange={() => toggleTag(tag)} />
+                {tag}
+              </label>
             ))}
           </div>
+        </aside>
+
+        <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredPosts.map((post) => (
+            <PostCard key={post._id} {...post} />
+          ))}
         </div>
-      </Container>
-    </div>
+      </section>
+    </Container>
   )
 }
 

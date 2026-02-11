@@ -2,23 +2,12 @@ import React from "react"
 import { Editor } from "@tinymce/tinymce-react"
 import { Controller } from "react-hook-form"
 
-export default function RTE({
-  name,
-  control,
-  label,
-  defaultValue = "",
-  rules,
-  error,
-}) {
+export default function RTE({ name, control, label, defaultValue = "", rules, error }) {
   return (
     <div className="w-full">
-      {label && (
-        <label className="mb-1.5 inline-block text-xs font-medium text-slate-300">
-          {label}
-        </label>
-      )}
+      {label && <label className="mb-1.5 inline-block text-xs font-semibold tracking-wide text-muted">{label}</label>}
 
-      <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
+      <div className="input-glass overflow-hidden rounded-xl">
         <Controller
           name={name || "content"}
           control={control}
@@ -55,7 +44,7 @@ export default function RTE({
                 toolbar:
                   "undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image link | removeformat | help",
                 content_style:
-                  "body { font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size:14px; color:#e6edf3; background:#141417; line-height:1.7; }",
+                  "body { font-family: Inter Tight, Segoe UI, sans-serif; font-size:14px; color:#e6edf3; background:#0f141c; line-height:1.8; }",
               }}
               onEditorChange={onChange}
             />
@@ -63,11 +52,7 @@ export default function RTE({
         />
       </div>
 
-      {error && (
-        <p className="mt-1.5 text-xs text-red-400">
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-1.5 text-xs text-red-300">{error}</p>}
     </div>
   )
 }

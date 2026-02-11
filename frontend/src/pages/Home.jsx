@@ -17,31 +17,32 @@ function Home() {
 
   if (!authStatus) {
     return (
-      <div className="w-full py-14">
-        <Container>
-          <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-white/[0.02] px-8 py-10 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-100">
-              Sign in to explore the latest posts
-            </h1>
-            <p className="mt-3 text-sm text-slate-300">
-              Your feed unlocks once you’re logged in.
-            </p>
-          </div>
-        </Container>
-      </div>
+      <Container>
+        <section className="surface-card mx-auto max-w-2xl rounded-3xl px-8 py-10 text-center">
+          <p className="hero-kicker">Private feed</p>
+          <h1 className="mt-3 text-3xl font-semibold text-app">Sign in to explore the latest posts</h1>
+          <p className="mt-3 text-sm text-muted">Your personalized blog feed unlocks once you log in.</p>
+        </section>
+      </Container>
     )
   }
 
   return (
-    <div className="w-full py-8">
-      <Container>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {posts.map((post) => (
-            <PostCard key={post._id} {...post} />
-          ))}
-        </div>
-      </Container>
-    </div>
+    <Container>
+      <section className="mb-8 rounded-3xl px-1 py-2 sm:px-2">
+        <p className="hero-kicker">The Blog</p>
+        <h1 className="brand-serif mt-3 text-4xl font-semibold leading-tight sm:text-5xl">Stories, product notes, and engineering deep dives</h1>
+        <p className="mt-3 max-w-3xl text-base text-muted">
+          Fresh articles from your workspace, presented with balanced spacing and focused readability.
+        </p>
+      </section>
+
+      <section className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {posts.map((post) => (
+          <PostCard key={post._id} {...post} />
+        ))}
+      </section>
+    </Container>
   )
 }
 

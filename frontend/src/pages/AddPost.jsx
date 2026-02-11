@@ -4,20 +4,15 @@ import PostForm from "../components/post-form/PostForm.jsx"
 
 function AddPost() {
   return (
-    <div className="py-8">
-      <Container>
-        <div className="mb-6 max-w-3xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-100">
-            Create a new post
-          </h1>
-          <p className="mt-1 text-sm text-slate-300">
-            Craft your story with a modern editor.
-          </p>
-        </div>
+    <Container>
+      <div className="mb-6 max-w-3xl">
+        <p className="hero-kicker">Create</p>
+        <h1 className="brand-serif mt-3 text-4xl font-semibold leading-tight">Craft a new post</h1>
+        <p className="mt-2 text-sm text-muted">Write with structure, attach a hero image, and submit for review when ready.</p>
+      </div>
 
-        <PostForm />
-      </Container>
-    </div>
+      <PostForm />
+    </Container>
   )
 }
 

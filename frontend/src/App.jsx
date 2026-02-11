@@ -18,12 +18,12 @@ function App() {
   useEffect(() => {
     authService
       .getCurrentUser()
-      .then(userData => {
+      .then((userData) => {
         if (userData) dispatch(login({ userData }))
         else dispatch(logout())
       })
       .finally(() => setLoading(false))
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
@@ -33,15 +33,12 @@ function App() {
   if (loading) return null
 
   return (
-    <div className="min-h-screen bg-app text-app">
+    <div className="app-shell min-h-screen bg-app text-app">
       <div className="flex min-h-screen flex-col">
         <Header theme={theme} setTheme={setTheme} />
 
-        <main className="flex-1">
-          {/* page container */}
-          <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 py-8">
-            <Outlet />
-          </div>
+        <main className="site-main flex-1">
+          <Outlet />
         </main>
 
         <Footer />

@@ -26,7 +26,7 @@ export default function SignUp() {
       const created = await authService.createAccount({ ...data })
       if (created) {
         const user = await authService.getCurrentUser()
-        if (user) dispatch(login(user))
+        if (user) dispatch(login({ userData: user }))
         navigate("/")
       }
     } catch (err) {
@@ -36,33 +36,23 @@ export default function SignUp() {
 
   return (
     <div className="flex w-full items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.02] p-8">
-        {/* Logo */}
+      <div className="surface-card w-full max-w-md rounded-3xl p-8">
         <div className="mb-6 flex justify-center">
           <span className="inline-block w-[96px]">
             <Logo width="100%" />
           </span>
         </div>
 
-        {/* Header */}
-        <h2 className="text-center text-2xl font-semibold tracking-tight text-slate-100">
-          Create your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-slate-300">
+        <h2 className="text-center text-2xl font-semibold tracking-tight text-app">Create your account</h2>
+        <p className="mt-2 text-center text-sm text-muted">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-semibold text-slate-200 hover:text-white"
-          >
+          <Link to="/login" className="interactive menu-link font-semibold">
             Sign in
           </Link>
         </p>
 
-        {error && (
-          <p className="mt-4 text-center text-sm text-red-400">{error}</p>
-        )}
+        {error && <p className="mt-4 text-center text-sm text-red-300">{error}</p>}
 
-        {/* Form */}
         <form onSubmit={handleSubmit(create)} className="mt-6 space-y-4">
           <div>
             <Input
@@ -72,11 +62,7 @@ export default function SignUp() {
                 required: "Full name is required",
               })}
             />
-            {errors.username?.message && (
-              <p className="mt-1 text-xs text-slate-400">
-                {errors.username.message}
-              </p>
-            )}
+            {errors.username?.message && <p className="mt-1 text-xs text-red-300">{errors.username.message}</p>}
           </div>
 
           <div>
@@ -88,17 +74,11 @@ export default function SignUp() {
                 required: "Email is required",
                 validate: {
                   matchPattern: (value) =>
-                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
-                      value,
-                    ) || "Enter a valid email address",
+                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Enter a valid email address",
                 },
               })}
             />
-            {errors.email?.message && (
-              <p className="mt-1 text-xs text-slate-400">
-                {errors.email.message}
-              </p>
-            )}
+            {errors.email?.message && <p className="mt-1 text-xs text-red-300">{errors.email.message}</p>}
           </div>
 
           <div>
@@ -110,11 +90,7 @@ export default function SignUp() {
                 required: "Password is required",
               })}
             />
-            {errors.password?.message && (
-              <p className="mt-1 text-xs text-slate-400">
-                {errors.password.message}
-              </p>
-            )}
+            {errors.password?.message && <p className="mt-1 text-xs text-red-300">{errors.password.message}</p>}
           </div>
 
           <Button type="submit" className="mt-2 w-full">

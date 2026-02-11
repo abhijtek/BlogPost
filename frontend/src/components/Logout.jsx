@@ -13,22 +13,7 @@ function LogoutBtn() {
   }
 
   return (
-    <button
-      onClick={logoutHandler}
-      className="
-        w-full
-        rounded-lg
-        px-3
-        py-2
-        text-left
-        text-sm
-        font-medium
-        text-slate-300
-        transition
-        hover:bg-white/5
-        hover:text-white
-      "
-    >
+    <button onClick={logoutHandler} className="interactive menu-link w-full rounded-lg px-3 py-2 text-left text-sm font-semibold">
       Logout
     </button>
   )

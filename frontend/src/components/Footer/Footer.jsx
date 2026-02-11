@@ -4,102 +4,39 @@ import Logo from "../../Logo.jsx"
 
 function Footer() {
   return (
-    <footer className="border-t border-white/10 py-10">
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="glass-card rounded-2xl p-6">
-          <div className="grid gap-8 lg:grid-cols-[2fr_1fr_1fr_1fr]">
-            {/* Brand */}
-            <div className="flex flex-col justify-between gap-6">
+    <footer className="py-8">
+      <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8">
+        <div className="surface-card rounded-3xl p-6 sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-[1.8fr_1fr_1fr]">
+            <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <Logo width="72px" />
-                <span className="text-base font-semibold text-app">
-                  BlogPost
-                </span>
+                <div>
+                  <p className="text-base font-semibold text-app">BlogPost</p>
+                  <p className="text-xs text-muted">Publish, review, grow</p>
+                </div>
               </div>
-              <p className="text-sm text-muted">
-                © 2026 BlogPost. All rights reserved.
+              <p className="max-w-md text-sm text-muted">
+                Build and review full-length posts with rich media, structured tags, and smooth publishing workflow.
               </p>
+              <p className="text-xs text-muted">Copyright 2026 BlogPost. All rights reserved.</p>
             </div>
 
-            {/* Company */}
             <div>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                Company
-              </h3>
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-muted">Explore</h3>
               <ul className="space-y-2 text-sm">
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Features
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Affiliate
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Press
-                  </Link>
-                </li>
+                <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/">Home</Link></li>
+                <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/all-posts">All Posts</Link></li>
+                <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/add-post">Write</Link></li>
               </ul>
             </div>
 
-            {/* Support */}
             <div>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                Support
-              </h3>
+              <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-muted">Account</h3>
               <ul className="space-y-2 text-sm">
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Account
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Help
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Support Center
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                Legal
-              </h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Terms
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Privacy
-                  </Link>
-                </li>
-                <li>
-                  <Link className="text-muted hover:text-app" to="/">
-                    Licensing
-                  </Link>
-                </li>
+                <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/panel">User Panel</Link></li>
+                <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/login">Login</Link></li>
+                <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/signup">Signup</Link></li>
               </ul>
             </div>
           </div>

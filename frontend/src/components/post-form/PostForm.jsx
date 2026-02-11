@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import { useNavigate } from "react-router"
-import { useSelector } from "react-redux"
 
 import Button from "../Button.jsx"
 import Input from "../Input.jsx"
@@ -10,12 +9,7 @@ import RTE from "../RTE.jsx"
 import appwriteService from "../../psappwrite/config.js"
 
 function PostForm({ post }) {
-  const [imageId, setImageId] = useState(
-    post ? appwriteService.getFilePreview(post.featuredImage) : null,
-  )
-
   const navigate = useNavigate()
-  const userData = useSelector((state) => state.auth.userData)
 
   const {
     register,
@@ -39,22 +33,16 @@ function PostForm({ post }) {
 
   const submit = async (data) => {
     if (post) {
-      const file = data.image?.[0]
-        ? await appwriteService.uploadFile(data.image[0])
-        : null
+      const file = data.image?.[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
-      if (file) {
-        appwriteService.deleteFile(post.featuredImage)
-      }
+      if (file) appwriteService.deleteFile(post.featuredImage)
 
       const dbPost = await appwriteService.updatePost(post.slug, {
         title: data.title,
         slug: data.slug,
         content: data.content,
         status: data.status,
-        tags: data.tags
-          ? data.tags.split(",").map((t) => t.trim()).filter(Boolean)
-          : [],
+        tags: data.tags ? data.tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
         featuredImage: file ? file.$id : undefined,
       })
 
@@ -76,9 +64,7 @@ function PostForm({ post }) {
         content: data.content,
         featuredImage: file.$id,
         status: data.status,
-        tags: data.tags
-          ? data.tags.split(",").map((t) => t.trim()).filter(Boolean)
-          : [],
+        tags: data.tags ? data.tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
       })
 
       if (dbPost) {
@@ -114,23 +100,11 @@ function PostForm({ post }) {
   }, [watch, slugTransform, setValue])
 
   return (
-    <form
-      onSubmit={handleSubmit(submit)}
-      className="grid gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-6 lg:grid-cols-[2fr_1fr]"
-    >
-      {/* Left */}
+    <form onSubmit={handleSubmit(submit)} className="surface-card grid gap-6 rounded-3xl p-6 lg:grid-cols-[2fr_1fr]">
       <div className="space-y-4">
         <div>
-          <Input
-            label="Title"
-            placeholder="Post title"
-            {...register("title", { required: "Title is required" })}
-          />
-          {errors.title?.message && (
-            <p className="mt-1 text-xs text-red-400">
-              {errors.title.message}
-            </p>
-          )}
+          <Input label="Title" placeholder="Post title" {...register("title", { required: "Title is required" })} />
+          {errors.title?.message && <p className="mt-1 text-xs text-red-300">{errors.title.message}</p>}
         </div>
 
         <div>
@@ -138,17 +112,9 @@ function PostForm({ post }) {
             label="Slug"
             placeholder="post-slug"
             {...register("slug", { required: "Slug is required" })}
-            onInput={(e) =>
-              setValue("slug", slugTransform(e.currentTarget.value), {
-                shouldValidate: true,
-              })
-            }
+            onInput={(e) => setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true })}
           />
-          {errors.slug?.message && (
-            <p className="mt-1 text-xs text-red-400">
-              {errors.slug.message}
-            </p>
-          )}
+          {errors.slug?.message && <p className="mt-1 text-xs text-red-300">{errors.slug.message}</p>}
         </div>
 
         <RTE
@@ -159,10 +125,7 @@ function PostForm({ post }) {
           rules={{
             required: "Content is required",
             validate: (value) => {
-              const plain = value
-                ?.replace(/<[^>]*>/g, " ")
-                .replace(/&nbsp;/g, " ")
-                .trim()
+              const plain = value?.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").trim()
               return plain ? true : "Content is required"
             },
           }}
@@ -170,7 +133,6 @@ function PostForm({ post }) {
         />
       </div>
 
-      {/* Right */}
       <div className="space-y-4">
         <div>
           <Input
@@ -181,21 +143,13 @@ function PostForm({ post }) {
               required: post ? false : "Featured image is required",
             })}
           />
-          {errors.image?.message && (
-            <p className="mt-1 text-xs text-red-400">
-              {errors.image.message}
-            </p>
-          )}
+          {errors.image?.message && <p className="mt-1 text-xs text-red-300">{errors.image.message}</p>}
         </div>
 
         {post && (
-          <div className="overflow-hidden rounded-xl border border-white/10">
+          <div className="overflow-hidden rounded-xl border border-[var(--border-soft)]">
             <img
-              src={
-                imageChanged?.[0]
-                  ? URL.createObjectURL(imageChanged[0])
-                  : appwriteService.getFilePreview(post.featuredImage)
-              }
+              src={imageChanged?.[0] ? URL.createObjectURL(imageChanged[0]) : appwriteService.getFilePreview(post.featuredImage)}
               alt={post.title}
               className="h-48 w-full object-cover"
             />
@@ -203,21 +157,11 @@ function PostForm({ post }) {
         )}
 
         <div>
-          <Input
-            label="Tags"
-            placeholder="ai, prompts, devtools"
-            {...register("tags")}
-          />
-          <p className="mt-1 text-xs text-slate-400">
-            Separate tags with commas
-          </p>
+          <Input label="Tags" placeholder="graphql, api, rest" {...register("tags")} />
+          <p className="mt-1 text-xs text-muted">Separate tags with commas</p>
         </div>
 
-        <Select
-          label="Status"
-          options={["draft", "submit"]}
-          {...register("status", { required: true })}
-        />
+        <Select label="Status" options={["draft", "submit"]} {...register("status", { required: true })} />
 
         <Button type="submit" className="w-full">
           {post ? "Update post" : "Submit post"}
