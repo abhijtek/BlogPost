@@ -40,4 +40,6 @@ app.use("/api/v1/blogs",articleRouter)
 app.get("/",(req,res)=>{
     res.send("Welcome to Basecampy");
 })
+import airoutes from "./routes/ai.routes.js"
+app.use("/api/v1/ai",airoutes);
 export default app;

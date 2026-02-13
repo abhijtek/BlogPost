@@ -1,6 +1,7 @@
 import React from "react"
 import Container from "../components/container/Container.jsx"
 import PostForm from "../components/post-form/PostForm.jsx"
+import AIPanel from "../components/AIPanel.jsx"
 
 function AddPost() {
   return (
@@ -12,6 +13,7 @@ function AddPost() {
       </div>
 
       <PostForm />
+      <AIPanel/>
     </Container>
   )
 }

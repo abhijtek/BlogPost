@@ -286,7 +286,7 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
 
   await sendEmail({
     email: user?.email,
-    subject: "Password Reset cause forgot",
+    subject: "Password Reset cause: forgot",
     mailgenContent: forgotPasswordMailgenContent(
       user.username,
       `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`,
