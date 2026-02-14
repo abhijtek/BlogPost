@@ -106,6 +106,14 @@ const router = createBrowserRouter([
 },
 ])
 
+const hideBootLoader = () => {
+  const loader = document.getElementById('boot-loader')
+  if (!loader) return
+  loader.style.opacity = '0'
+  loader.style.transition = 'opacity 220ms ease'
+  setTimeout(() => loader.remove(), 240)
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
  
     <Provider store={store}>
@@ -113,3 +121,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </Provider>
 
 )
+
+requestAnimationFrame(hideBootLoader)
+setTimeout(hideBootLoader, 1200)
