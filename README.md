@@ -9,6 +9,7 @@ BlogPost is built for teams that need more than basic CRUD:
 - Rich article editing (TinyMCE)
 - Tagging, sorting, filtering, and view tracking
 - Appwrite-powered media storage for featured images
+- AI writing assistant panel for fast first drafts
 
 ## Tech Stack
 
@@ -26,6 +27,7 @@ BlogPost is built for teams that need more than basic CRUD:
 - JWT auth (access + refresh)
 - `bcrypt`, `cookie-parser`, `cors`, `express-validator`
 - Nodemailer + Mailgen (auth/email flows)
+- Hugging Face inference integration for AI generation
 
 ## Project Structure
 ```text
@@ -63,6 +65,11 @@ BlogPost/
   - sorting by date/views
   - tag and text filtering
 - View counter with 24-hour per-user threshold logic
+- AI panel in Add Post:
+  - submit prompt and show it instantly in thread
+  - loading indicator while generation is in progress
+  - generated response bubble with one-click copy
+  - submit button lock while response is loading
 
 ## Local Development
 
@@ -92,6 +99,7 @@ REFRESH_TOKEN_EXPIRY=10d
 FORGOT_PASSWORD_REDIRECT_URL=http://localhost:5173/reset-password
 ADMIN_PROMOTE_SECRET=your_admin_promote_secret
 USER_VIEW_LIMIT_24=5
+HF_TOKEN=your_huggingface_token
 
 MAILTRAP_SMTP_HOST=
 MAILTRAP_SMTP_PORT=
@@ -162,11 +170,15 @@ Base URL: `/api/v1`
 - `PATCH /posts/:slug/review` (admin)
 - `POST /posts/:slug/view` (auth, published)
 
+### AI (`/ai`)
+- `POST /generate` (auth, rate-limited)
+
 ## Deployment Notes
 - Frontend can be deployed to Vercel.
 - Backend can be deployed on a Node host (Render/Railway/Vercel Functions, etc.).
 - Ensure `CORS_ORIGIN` matches deployed frontend URL.
 - Ensure `VITE_BACKEND_BASE_URL` points to deployed backend.
+- Configure `HF_TOKEN` in backend environment variables for AI generation.
 
 ## Common Troubleshooting
 - Avatar not visible after login:
@@ -178,6 +190,9 @@ Base URL: `/api/v1`
 - CORS cookie/session issues:
   - Set `credentials: true` on frontend requests (already enabled in axios instance).
   - Use correct origin and HTTPS in production.
+- AI generation fails:
+  - Verify backend `HF_TOKEN` is set in deployment secrets.
+  - Check `/api/v1/ai/generate` route availability and auth headers.
 
 ## License
 Private/internal use unless you define otherwise.
