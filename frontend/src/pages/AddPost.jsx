@@ -1,9 +1,18 @@
 import React from "react"
+import { Navigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 import Container from "../components/container/Container.jsx"
 import PostForm from "../components/post-form/PostForm.jsx"
 import AIPanel from "../components/AIPanel.jsx"
 
 function AddPost() {
+  const userData = useSelector((state) => state.auth.userData)
+  const isAdmin = userData?.role === "admin"
+
+  if (isAdmin) {
+    return <Navigate to="/panel" replace />
+  }
+
   return (
     <Container>
       <div className="mb-6 max-w-3xl">

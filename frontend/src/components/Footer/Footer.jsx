@@ -1,8 +1,12 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 import Logo from "../../Logo.jsx"
 
 function Footer() {
+  const userData = useSelector((state) => state.auth.userData)
+  const isAdmin = userData?.role === "admin"
+
   return (
     <footer className="py-8">
       <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8">
@@ -27,7 +31,9 @@ function Footer() {
               <ul className="space-y-2 text-sm">
                 <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/">Home</Link></li>
                 <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/all-posts">All Posts</Link></li>
-                <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/add-post">Write</Link></li>
+                {!isAdmin && (
+                  <li><Link className="interactive menu-link rounded px-1 py-0.5" to="/add-post">Write</Link></li>
+                )}
               </ul>
             </div>
 

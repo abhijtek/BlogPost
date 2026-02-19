@@ -9,11 +9,12 @@ function Header({ theme, setTheme }) {
   const { pathname } = useLocation()
   const authStatus = useSelector((state) => state.auth.status)
   const userData = useSelector((state) => state.auth.userData)
+  const isAdmin = userData?.role === "admin"
 
   const navItems = [
     { name: "Home", slug: "/", active: true },
     { name: "All Posts", slug: "/all-posts", active: authStatus },
-    { name: "Add Post", slug: "/add-post", active: authStatus },
+    { name: "Add Post", slug: "/add-post", active: authStatus && !isAdmin },
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
   ]
