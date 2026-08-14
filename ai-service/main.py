@@ -4,8 +4,6 @@ from routes.chat import router as ChatRouter
 from routes.ingestion import router as ingestionRouter
 app = FastAPI()
 
-
-
 app.include_router(ChatRouter)
 app.include_router(ingestionRouter)    
 
