@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import ReactMarkdown from "react-markdown"
 import api from "../psappwrite/api.js"
 
 const makeMessage = (role, content) => ({
@@ -160,7 +161,7 @@ export default function BlogChat({ blogId, userId }) {
                 }`}
               >
                 <div className="mb-1.5 flex items-center justify-between gap-4 text-[11px] font-bold uppercase tracking-[0.14em]">
-                  <span className={message.role === "user" ? "text-app" : "text-var(--accent-2)"}>
+                  <span className={message.role === "user" ? "text-app" : "text-[var(--accent-2)]"}>
                     {message.role === "user" ? "You" : "Blog companion"}
                   </span>
                   {message.role === "assistant" && (
@@ -173,19 +174,25 @@ export default function BlogChat({ blogId, userId }) {
                     </button>
                   )}
                 </div>
-                <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
+                {message.role === "assistant" ? (
+                  <div className="blog-chat-markdown">
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                  </div>
+                ) : (
+                  <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                )}
               </div>
             </article>
           ))}
 
           {isLoading && (
             <div className="flex justify-start">
-              <div className="rounded-2xl rounded-bl-md border border-var(--border-soft) bg-[color-mix(in_srgb,var(--surface-1)_88%,transparent)] px-4 py-3">
+              <div className="rounded-2xl rounded-bl-md border border-[var(--border-soft)] bg-[color-mix(in_srgb,var(--surface-1)_88%,transparent)] px-4 py-3">
                 <div className="flex items-center gap-2 text-sm text-muted">
                   <span className="flex gap-1" aria-hidden="true">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-var(--accent) [animation-delay:-0.2s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-var(--accent) [animation-delay:-0.1s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-var(--accent)" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--accent)] [animation-delay:-0.2s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--accent)] [animation-delay:-0.1s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--accent)]" />
                   </span>
                   Searching this article…
                 </div>

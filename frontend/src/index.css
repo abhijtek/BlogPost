@@ -243,3 +243,78 @@ h4 {
   color: var(--accent);
   text-decoration: underline;
 }
+
+.blog-chat-markdown > :first-child {
+  margin-top: 0;
+}
+
+.blog-chat-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.blog-chat-markdown p,
+.blog-chat-markdown ul,
+.blog-chat-markdown ol,
+.blog-chat-markdown blockquote,
+.blog-chat-markdown pre {
+  margin: 0 0 0.85rem;
+}
+
+.blog-chat-markdown h1,
+.blog-chat-markdown h2,
+.blog-chat-markdown h3 {
+  margin: 1rem 0 0.45rem;
+  color: var(--text-main);
+  font-family: "Literata", Georgia, serif;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.blog-chat-markdown h1 { font-size: 1.35rem; }
+.blog-chat-markdown h2 { font-size: 1.2rem; }
+.blog-chat-markdown h3 { font-size: 1.05rem; }
+
+.blog-chat-markdown ul,
+.blog-chat-markdown ol {
+  padding-left: 1.35rem;
+}
+
+.blog-chat-markdown ul { list-style: disc; }
+.blog-chat-markdown ol { list-style: decimal; }
+
+.blog-chat-markdown li + li {
+  margin-top: 0.3rem;
+}
+
+.blog-chat-markdown a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.blog-chat-markdown blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.85rem;
+  color: var(--text-soft);
+}
+
+.blog-chat-markdown code {
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, var(--surface-2) 88%, black);
+  padding: 0.1rem 0.3rem;
+  color: var(--text-main);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.85em;
+}
+
+.blog-chat-markdown pre {
+  overflow-x: auto;
+  border: 1px solid var(--border-soft);
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+  background: color-mix(in srgb, var(--surface-2) 88%, black);
+}
+
+.blog-chat-markdown pre code {
+  padding: 0;
+  background: transparent;
+}
