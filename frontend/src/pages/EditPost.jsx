@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 
 import Container from "../components/container/Container"
 import PostForm from "../components/post-form/PostForm.jsx"
+import AIPanel from "../components/AIPanel.jsx"
 import appwriteService from "../psappwrite/config"
 
 function EditPost() {
@@ -32,6 +33,7 @@ function EditPost() {
       </div>
 
       <PostForm post={post} />
+      <AIPanel />
     </Container>
   )
 }

@@ -5,7 +5,7 @@ import parse from "html-react-parser"
 
 import appwriteService from "../psappwrite/config.js"
 import { Button, Container } from "../components"
-
+import BlogChat from "../components/BlogChat.jsx"
 export default function Post() {
   const [post, setPost] = useState(null)
   const { slug } = useParams()
@@ -102,6 +102,20 @@ export default function Post() {
         <section className="surface-card rounded-3xl px-6 py-7 sm:px-8">
           <div className="article-content">{parse(post.content)}</div>
         </section>
+        {authStatus ? (
+          <BlogChat key={post._id} blogId={post._id} userId={userData?._id} />
+        ) : (
+          <section className="surface-card rounded-3xl px-6 py-7 text-center sm:px-8">
+            <p className="hero-kicker">Blog companion</p>
+            <h2 className="brand-serif mt-2 text-2xl font-semibold">Want to ask about this article?</h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm text-muted">
+              Sign in to chat with the article and get answers grounded in its content.
+            </p>
+            <Link to="/login" className="interactive btn-glass mt-5 inline-flex rounded-full px-4 py-2 text-sm font-semibold">
+              Sign in to chat
+            </Link>
+          </section>
+        )}
       </article>
     </Container>
   )

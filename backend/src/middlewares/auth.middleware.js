@@ -29,7 +29,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
   }
 });
 
-
+// possibly useless, to tired to check
 export const requireAdmin = asyncHandler(async(req,res)=>{
   return req.user.role === "admin";
   // to be used on admin only routes

@@ -6,6 +6,7 @@ import { ApiError } from "../utils/api-error.js";
 import { ArticleDailyView } from "../models/articleView.model.js";
 import has24HoursPassedSinceDayStart from "../helpers/getHas24HrsPassed.js";
 import { ApiResponse } from "../utils/api-response.js";
+import { deleteBlogRag, ingestBlogRag } from "../services/rag.service.js";
 const createPost = asyncHandler(async (req, res) => {
   const { title, slug, content, featuredImage, tags } = req.body;
   const createdArticle = await Article.create({
@@ -115,6 +116,9 @@ const updatePost = asyncHandler(async (req, res) => {
   }
 
   if (article.status === "published") {
+    // rag part here
+    await deleteBlogRag({slug: slug});
+    console.log("article removed from vdb")
     update.status = "pending";
     update.publishedAt = null;
     update.review = {
@@ -123,13 +127,14 @@ const updatePost = asyncHandler(async (req, res) => {
       rejectionReason: "",
     };
   }
-
+  
   const options = { returnOriginal: false };
   const myUpdatedArticle = await Article.findOneAndUpdate(
     { slug },
     update,
     options,
   );
+  // await ingestBlogRag({slug: myUpdatedArticle.slug})
   res.status(202).json(myUpdatedArticle);
   console.log("aritcle updated");
 });
@@ -137,6 +142,10 @@ const updatePost = asyncHandler(async (req, res) => {
 const deletePost = asyncHandler(async (req, res) => {
   const user = req.user;
   const { slug } = req.params;
+  const article = req.article
+  if(article.status === "published"){
+    await deleteBlogRag({slug: slug});
+  }
   if (!user) {
     throw new ApiError(404, "invalid credentials, could not get yours posts");
   }
@@ -145,6 +154,7 @@ const deletePost = asyncHandler(async (req, res) => {
     userId: String(user._id),
     slug: slug,
   });
+  
   res.status(202).json(deletedArticle);
   console.log("article deleted");
 });
@@ -203,6 +213,12 @@ const reviewPost = asyncHandler(async (req, res) => {
   }
 
   await article.save();
+  if(action=== "approve"){
+    await ingestBlogRag({
+      slug: article.slug
+    })
+    console.log("Article indexed in vector DB")
+  }
   res.status(202).json(article);
 });
 const incrementArticleView = asyncHandler(async (req, res) => {

@@ -45,6 +45,7 @@ router
 router
   .route("/posts/:slug")
   .put(verifyJWT, requireArticleOwner, updatePost);
+// GEt a particular post via slug  
 router
 .route("/posts/:slug")
 .get(getPost)
