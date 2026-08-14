@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { chatBot } from "../psappwrite/ai";
 
-function AIPanel() {
+function AIPanel(){
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const [copiedId, setCopiedId] = useState("");
