@@ -31,7 +31,7 @@ def create_chunks(post):
         metadata = {
             "blog_id" : blog_id,
             "title": title,
-            "tage" : tags,
+            "tags" : tags,
             "slug": slug
         }
         
@@ -56,7 +56,6 @@ async def ingest_all_posts():
         "posts": len(posts),
         "chunks": tot_chunks
     }
-    
 async def ingest_post(slug: str):
         post = await(get_post_by_slug(slug))
         chunk = create_chunks(post)
@@ -90,5 +89,3 @@ async def delete_post(slug:str):
         "slug": slug,
         "message": "Blog removed from vector store"
     }
-    
-            

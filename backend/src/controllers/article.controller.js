@@ -214,10 +214,21 @@ const reviewPost = asyncHandler(async (req, res) => {
 
   await article.save();
   if(action=== "approve"){
-    await ingestBlogRag({
-      slug: article.slug
-    })
-    console.log("Article indexed in vector DB")
+    try {
+      await ingestBlogRag({
+        slug: article.slug
+      })
+      console.log("Article indexed in vector DB")
+    } catch (error) {
+      article.status = "pending";
+      article.publishedAt = null;
+      await article.save();
+
+      throw new ApiError(
+        503,
+        "The AI service could not index this post. The post remains pending; please approve it again.",
+      );
+    }
   }
   res.status(202).json(article);
 });
